@@ -24,18 +24,14 @@ public static class Divisors
     {
         List<int> results = new();
         //Problem 1.
-        results.Add(1); //Because every number is divisible by 1 and we don't want the actual number included
 
-        for (int divisor = 2; divisor < number / 2; ++divisor) //start at 2 to begin looking for divisors
+        for (int divisor = 1; divisor < number; ++divisor)
         {
             if (number % divisor == 0)
             {
                 results.Add(divisor);
-                results.Add(number / divisor);
             }
         }
-
-        results.Sort();
 
         return results;
     }
