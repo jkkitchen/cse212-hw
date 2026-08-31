@@ -1,8 +1,12 @@
-public static class Divisors {
+using System.Collections.Generic;
+
+public static class Divisors
+{
     /// <summary>
     /// Entry point for the Divisors class
     /// </summary>
-    public static void Run() {
+    public static void Run()
+    {
         List<int> list = FindDivisors(80);
         Console.WriteLine("<List>{" + string.Join(", ", list) + "}"); // <List>{1, 2, 4, 5, 8, 10, 16, 20, 40}
         List<int> list1 = FindDivisors(79);
@@ -16,9 +20,24 @@ public static class Divisors {
     /// </summary>
     /// <param name="number">The number to find the divisor</param>
     /// <returns>List of divisors</returns>
-    private static List<int> FindDivisors(int number) {
+    private static List<int> FindDivisors(int number)
+    {
         List<int> results = new();
-        // TODO problem 1
+        //Problem 1.
+        results.Add(1); //Because every number is divisible by 1 and we don't want the actual number included
+
+        for (int divisor = 2; divisor < number / 2; ++divisor) //start at 2 to begin looking for divisors
+        {
+            if (number % divisor == 0)
+            {
+                results.Add(divisor);
+                results.Add(number / divisor);
+            }
+        }
+
+        results.Sort();
+
         return results;
     }
 }
+
