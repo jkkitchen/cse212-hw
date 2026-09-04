@@ -9,11 +9,19 @@ public static class Arrays
     public static double[] MultiplesOf(double number, int length)
     {
         // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        //Create an array to hold the multiples generated in this function
+        double[] multiples = new double[length];
+
+        //Create for loop that will generate the multiples of the number and store them in the array
+        for (int i = 0; i < length; i++)
+        {
+            //store the multiple of the number in the array at index i  
+            //multiply the number by (i+1) because the indices start at 0, but the multiples need to start at 1 (i.e. at index 0, multiple will be 1 x number)
+            multiples[i] = number * (i + 1);
+        }
+
+        return multiples;
     }
 
     /// <summary>
@@ -26,8 +34,34 @@ public static class Arrays
     public static void RotateListRight(List<int> data, int amount)
     {
         // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+
+        //Create a new list to hold the rotated values with the same number of values as the original list
+        List<int> rotatedList = new List<int>(new int[data.Count]);
+        //Create a for loop that will iterate the same number of times as the length of the list (determined using .count) to create a new value for each index
+        for (int i = 0; i < data.Count; i++)
+        {
+            //Use if statements to assign new indices to each value in the list based on the amount of rotation
+            //Anything at an index that is less than the length of the list minus the amount of rotation will not need to wrap around 
+            // and can just have the amount added
+            if (i < (data.Count - amount))
+            {
+                int newIndex = i + amount;
+                rotatedList[newIndex] = data[i];
+            }
+            //Anything at an index that is greater than or equal to the length of the list minus the amount of rotation will need 
+            // to wrap around which means adding the amount then subtracting the length of the list
+            else
+            {
+                int newIndex = i - (data.Count - amount);
+                rotatedList[newIndex] = data[i];
+            }
+        }
+
+        //Replace values of the original list with the values of the rotated list
+        //this has to be done in a separate loop because the original list is being used to fill the replacement list in the previous loop
+        for (int i = 0; i < data.Count; i++)
+        {
+            data[i] = rotatedList[i]; 
+        }
     }
 }
