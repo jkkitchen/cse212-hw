@@ -52,7 +52,7 @@ public static class Arrays
             // to wrap around which means adding the amount then subtracting the length of the list
             else
             {
-                int newIndex = i - (data.Count - amount);
+                int newIndex = i + amount - data.Count;
                 rotatedList[newIndex] = data[i];
             }
         }
