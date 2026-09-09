@@ -10,8 +10,8 @@
         queue.Enqueue(100);
         var value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found:
-
+        // Defect(s) Found: Had incorrect index in the dequeue method. Changed from 1 to 0 to fix the issue.
+        
         Console.WriteLine("------------");
 
         // Test 2
@@ -28,7 +28,7 @@
         Console.WriteLine(value);
         value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found: 
+        // Defect(s) Found: Enqueue was adding numbers to the front of the queue rather than the back. 
 
         Console.WriteLine("------------");
 
@@ -44,7 +44,7 @@
         catch (IndexOutOfRangeException) {
             Console.WriteLine("I got the exception as expected.");
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: None
     }
 
     private readonly List<int> _queue = new();
@@ -54,7 +54,7 @@
     /// </summary>
     /// <param name="value">Integer value to add to the queue</param>
     private void Enqueue(int value) {
-        _queue.Insert(0, value);
+        _queue.Add(value); //Changed to .Add rather than .Insert(0, value) to fix the order of the queue.
     }
 
     /// <summary>
@@ -66,8 +66,8 @@
         if (_queue.Count <= 0)
             throw new IndexOutOfRangeException();
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        var value = _queue[0]; //Changed to have an index of 0 rather than 1 since the first element in a list is at index 0.
+        _queue.RemoveAt(0);
         return value;
     }
 }
