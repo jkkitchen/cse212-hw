@@ -11,24 +11,64 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
+        // Scenario: User shall specify a maximum size for the queue. If the size is invalid then default should be 10. The queue shall be created with that size.
+        
+        var test1 = new CustomerService(0);
         // Expected Result: 
         Console.WriteLine("Test 1");
+        Console.WriteLine(test1);
 
-        // Defect(s) Found: 
+        // Defect(s) Found: None--it worked as expected.
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
+        // Scenario: AddNewCustomer method shall enqueue a new customer into the queue. The ServeCustomer function shall dequeue the next customer and display the information.
         // Expected Result: 
         Console.WriteLine("Test 2");
 
-        // Defect(s) Found: 
+        //Create new instance of CustomerService with a max size of 2
+        var test2 = new CustomerService(2);
+        //Add a new customer to the queue
+        test2.AddNewCustomer();
+        //Dequeue the customer to test if teh AddNewCustomer method worked correctly       
+        test2.ServeCustomer();
+        
+        // Defect(s) Found: Dequee method was removing the customer from the queue before displaying the information.
 
         Console.WriteLine("=================");
 
-        // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: If the queue is full when trying to add a customer then an error message will be displayed.
+        // Expected Result: 
+        Console.WriteLine("Test 3");
+
+        //Create new instance of CustomerService with a max size of 2
+        var test3 = new CustomerService(2);
+        //Add a new customer to the queue
+        test3.AddNewCustomer();
+        test3.AddNewCustomer();
+        test3.AddNewCustomer(); //This should display an error message since the queue is full     
+
+
+        // Defect(s) Found: Error message is not displayed. Changed > to >= in the if statement in the AddNewCustomer method to fix this issue.
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: If the queue is empty when trying to serve a customer then an error message will be displayed.
+        // Expected Result: 
+        Console.WriteLine("Test 4");
+
+        //Create new instance of CustomerService with a max size of 2
+        var test4 = new CustomerService(2);
+        //Attempt to serve a customer when the queue is empty
+        test4.ServeCustomer(); 
+
+        // Defect(s) Found: Error message is displayed. Changed to if statement to give more clear reasoning.
+
+        Console.WriteLine("=================");
+
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +107,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) { //Added = sign so that it will not allow more customers to be added than the max size of the queue
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -87,9 +127,13 @@ public class CustomerService {
     /// <summary>
     /// Dequeue the next customer and display the information.
     /// </summary>
-    private void ServeCustomer() {
-        _queue.RemoveAt(0);
+    private void ServeCustomer() {        
+        if (_queue.Count == 0) { //Added if statement to make error message more descriptive and clear.
+            Console.WriteLine("No customers in queue.");
+            return;
+        }
         var customer = _queue[0];
+        _queue.RemoveAt(0); //Switched order so customer is defined before being removed from the queue
         Console.WriteLine(customer);
     }
 
