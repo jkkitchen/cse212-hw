@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -22,7 +23,34 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        //Create an internal method to reverse the order of the string
+        string ReverseWord(string word)
+        {
+            string reversed = "";
+            for (int i = word.Length - 1; i >= 0; i--)
+            {
+                reversed += word[i];
+            }
+            return reversed;
+        }
+
+        //Create an empty set to add the matching words to
+        var wordSet = new HashSet<string>();
+        var wordPairs = new HashSet<string>();
+
+        //Loop through each word in words and check if there is a reverse version in the set
+        foreach (string word in words)
+        {
+            var reverse = ReverseWord(word);
+            if (wordSet.Contains(reverse))
+            {                
+                wordPairs.Add($"{reverse} & {word}"); //reverse will actually be the first one of these two in the set since it won't get added until both are in the array.
+            }
+
+            wordSet.Add(word);            
+        }
+
+        return wordPairs.ToArray();
     }
 
     /// <summary>
@@ -43,8 +71,18 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
-        }
+            var degree = fields[3];
 
+            //If the type of education/degree is not in the summary table yet, add it
+            if (!degrees.ContainsKey(degree))
+            {
+                degrees[degree] = 1;
+            } else
+            {
+                //If the type of education is in the table then update the value
+                degrees[degree] += 1;
+            }        
+        }
         return degrees;
     }
 
@@ -67,6 +105,67 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
+        //Make all uppercase and get rid of spaces since it says to ignore those things
+        word1 = word1.ToUpper().Replace(" ", "");
+        word2 = word2.ToUpper().Replace(" ", "");
+
+        if (word1.Length == word2.Length)
+        {
+            //word 1
+            var letters1 = new Dictionary<char, int>();
+
+            for (int i = 0; i < word1.Length; i++)
+            {
+                var letter = word1[i];
+
+                //Check if dictionary contains that letter
+                if (letters1.ContainsKey(letter))
+                {
+                    //Increase count by 1 since it's already in the dictionary
+                    letters1[letter] += 1;
+                }
+                else
+                {
+                    //Add to dictionary starting with a count of 1
+                    letters1[letter] = 1;
+                }
+            }
+
+            //word 2
+            var letters2 = new Dictionary<char, int>();
+
+            for (int j = 0; j < word2.Length; j++)
+            {
+                var letter = word2[j];
+
+                //Check if dictionary contains that letter
+                if (letters2.ContainsKey(letter))
+                {
+                    //Increase count by 1 since it's already in the dictionary
+                    letters2[letter] += 1;
+                }
+                else
+                {
+                    //Add to dictionary starting with a count of 1
+                    letters2[letter] = 1;
+                }
+            }
+
+            //Go through and check that the number of each letter in the two dictionaries matches
+            foreach (var key in letters1.Keys)
+            {
+                //If both dictionaries don't have that letter or if the number of each letter in the two dictionaries isn't the same, return false
+                if (!letters2.ContainsKey(key) || letters1[key] != letters2[key])
+                {
+                    return false;
+                }
+            }
+
+            //If it made it through the foreach loop without returning false it means that both dictionaries have the same number of each letter.
+            return true;
+        }
+        
+        //If the length of the two words (after removing spaces) isn't the same then they can't be anagrams.
         return false;
     }
 
